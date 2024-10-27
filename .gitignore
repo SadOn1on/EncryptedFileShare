@@ -4,6 +4,7 @@
 */target
 */.gitignore
 */.DS_Store
+.DS_Store
 
 ### IntelliJ IDEA ###
 *.iws
