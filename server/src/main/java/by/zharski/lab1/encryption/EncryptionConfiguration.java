@@ -6,16 +6,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.keygen.KeyGenerators;
 
 @Configuration
 @PropertySource({ "classpath:application.properties", "classpath:application-${spring.profiles.active}.properties"})
 public class EncryptionConfiguration {
 
-    @Value("aes.password:test")
+    @Value("${aes.password:test}")
     private String password;
-    //@Value("aes.salt:salt")
-    private String salt = KeyGenerators.string().generateKey();;
+    @Value("${aes.salt}")
+    private String salt;
 
     @Bean
     public BytesEncryptor bytesEncryptor() {
