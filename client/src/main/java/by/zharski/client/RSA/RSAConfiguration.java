@@ -1,4 +1,4 @@
-package by.zharski.lab1.RSA;
+package by.zharski.client.RSA;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

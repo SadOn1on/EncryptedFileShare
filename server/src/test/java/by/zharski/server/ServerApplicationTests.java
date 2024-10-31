@@ -1,4 +1,4 @@
-package by.zharski.lab1;
+package by.zharski.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

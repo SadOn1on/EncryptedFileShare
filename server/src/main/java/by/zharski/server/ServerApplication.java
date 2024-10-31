@@ -1,6 +1,6 @@
-package by.zharski.lab1;
+package by.zharski.server;
 
-import by.zharski.lab1.files.StorageProperties;
+import by.zharski.server.files.StorageProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

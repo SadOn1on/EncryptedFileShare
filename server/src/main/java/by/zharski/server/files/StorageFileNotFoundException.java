@@ -1,4 +1,4 @@
-package by.zharski.lab1.files;
+package by.zharski.server.files;
 
 public class StorageFileNotFoundException extends StorageException {
 

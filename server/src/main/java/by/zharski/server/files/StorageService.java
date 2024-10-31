@@ -1,7 +1,4 @@
-package by.zharski.lab1.files;
-
-import org.springframework.core.io.Resource;
-import org.springframework.web.multipart.MultipartFile;
+package by.zharski.server.files;
 
 import java.nio.file.Path;
 import java.util.stream.Stream;

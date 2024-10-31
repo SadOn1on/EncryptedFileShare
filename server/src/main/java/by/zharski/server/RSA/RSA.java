@@ -1,4 +1,4 @@
-package by.zharski.lab1.RSA;
+package by.zharski.server.RSA;
 
 import java.math.BigInteger;
 import java.security.InvalidParameterException;
@@ -69,6 +69,11 @@ public class RSA {
     // Encrypt message
     public BigInteger encr(BigInteger x) {
         return Utils.modPow(x, e, n);
+    }
+
+    // Encrypt message with custom key and modulus
+    public static BigInteger encr(BigInteger k, BigInteger x, BigInteger modulus) {
+        return Utils.modPow(x, k, modulus);
     }
 
     // Decrypt message

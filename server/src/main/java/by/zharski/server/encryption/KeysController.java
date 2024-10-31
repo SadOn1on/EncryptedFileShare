@@ -1,14 +1,17 @@
-package by.zharski.lab1.encryption;
+package by.zharski.server.encryption;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
 import java.util.List;
 
 @RestController
+@RequestMapping("/keys")
 @PropertySource({ "classpath:application.properties", "classpath:application-${spring.profiles.active}.properties"})
 public class KeysController {
 
@@ -23,8 +26,9 @@ public class KeysController {
         this.encryptionService = encryptionService;
     }
 
-    @GetMapping("/keys")
-    public List<List<BigInteger>> getKey() {
-        return List.of(encryptionService.encryptKey(password), encryptionService.encryptKey(salt));
+    @GetMapping
+    public List<List<BigInteger>> getKey(@RequestParam String k, @RequestParam String n) {
+        return List.of(encryptionService.encryptKey(password, k, n), encryptionService.encryptKey(salt, k, n));
     }
+
 }

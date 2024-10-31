@@ -1,9 +1,11 @@
-package by.zharski.lab1.RSA;
+package by.zharski.client.RSA;
 
 import java.math.BigInteger;
 import java.util.Random;
 
-import static java.math.BigInteger.*;
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.TWO;
+import static java.math.BigInteger.ZERO;
 
 public class Utils {
 

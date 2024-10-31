@@ -1,7 +1,6 @@
-package by.zharski.lab1.encryption;
+package by.zharski.server.encryption;
 
-import by.zharski.lab1.RSA.RSA;
-import org.springframework.core.io.ByteArrayResource;
+import by.zharski.server.RSA.RSA;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,14 @@ public class EncryptionService {
         this.encryptor = encryptor;
     }
 
-    public List<BigInteger> encryptKey(String key) {
+
+    public List<BigInteger> encryptKey(String key, String rsaKey, String modulus) {
         byte[] keyBytes = key.getBytes();
         List<BigInteger> result = new ArrayList<>();
+        BigInteger rsaKeyBigInt = new BigInteger(rsaKey);
+        BigInteger n = new BigInteger(modulus);
         for (byte x : keyBytes) {
-            result.add(rsa.encr(new BigInteger(String.valueOf(x))));
+            result.add(RSA.encr(rsaKeyBigInt, new BigInteger(String.valueOf(x)), n));
         }
         return result;
     }

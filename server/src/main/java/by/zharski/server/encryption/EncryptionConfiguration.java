@@ -1,4 +1,4 @@
-package by.zharski.lab1.encryption;
+package by.zharski.server.encryption;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
