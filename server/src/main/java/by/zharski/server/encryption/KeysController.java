@@ -17,7 +17,7 @@ public class KeysController {
 
     @Value("${aes.password}")
     private String password;
-    @Value("aes.salt")
+    @Value("${aes.salt}")
     private String salt;
 
     private EncryptionService encryptionService;

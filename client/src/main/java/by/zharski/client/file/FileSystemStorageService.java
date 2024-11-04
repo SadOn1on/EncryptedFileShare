@@ -1,14 +1,15 @@
-package by.zharski.server.files;
+package by.zharski.client.file;
+
+import by.zharski.server.files.FileWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 
 @Service
 public class FileSystemStorageService implements StorageService {
@@ -31,7 +32,10 @@ public class FileSystemStorageService implements StorageService {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file.");
             }
-            Path destinationFile = Paths.get(rootLocation.normalize().toAbsolutePath().toString() + "/" + file.getFilename());
+            Path destinationFile = this.rootLocation.resolve(
+                        Paths.get(file.getFilename())
+                    )
+                    .normalize().toAbsolutePath();
             if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
                 // This is a security check
                 throw new StorageException("Cannot store file outside current directory.");

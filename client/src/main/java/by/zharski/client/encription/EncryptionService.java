@@ -37,11 +37,11 @@ public class EncryptionService {
         return new String(result);
     }
 
-    public byte[] encryptFile(byte[] resource) {
+    public byte[] encryptBytes(byte[] resource) {
         return encryptor.encrypt(resource);
     }
 
-    public byte[] decryptFile(byte[] ciphertext) {
+    public byte[] decryptBytes(byte[] ciphertext) {
         return encryptor.decrypt(ciphertext);
     }
 

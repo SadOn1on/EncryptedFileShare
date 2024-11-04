@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +36,12 @@ public class FileUploadController {
     }
 
     @GetMapping
-    public List<String> listUploadedFiles() {
-        return storageService.loadAll().map(Path::toString).toList();
+    public List<byte[]> listUploadedFiles() {
+        return storageService.loadAll()
+                .map(Path::toString)
+                .map(String::getBytes)
+                .map(encryptionService::encryptBytes)
+                .toList();
     }
 
     @GetMapping("/{filename:.+}")
@@ -53,14 +58,12 @@ public class FileUploadController {
                         HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"" + file.getFilename() + "\""
                 )
-                .body(encryptionService.encryptFile(serialize(file)));
+                .body(encryptionService.encryptBytes(serialize(file)));
     }
 
     @PostMapping
     public ResponseEntity<String> handleFileUpload(@RequestBody byte[] file) {
-        file = serveFile("test.txt").getBody();
-
-        FileWrapper fileWrapper = (FileWrapper) deserialize(encryptionService.decryptFile(file));
+        FileWrapper fileWrapper = (FileWrapper) deserialize(encryptionService.decryptBytes(file));
         storageService.store(fileWrapper);
 
         return ResponseEntity.ok().body(fileWrapper.getFilename());

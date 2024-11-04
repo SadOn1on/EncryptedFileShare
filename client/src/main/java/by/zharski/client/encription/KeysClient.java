@@ -33,4 +33,8 @@ public class KeysClient {
                 .retrieve()
                 .body(parameterizedTypeReference);
     }
+
+    public String getBasePath() {
+        return basePath;
+    }
 }
