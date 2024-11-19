@@ -5,7 +5,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.List;
 
 import by.zharski.server.encryption.EncryptionService;
@@ -28,11 +31,17 @@ public class FileUploadController {
 
     private final StorageService storageService;
     private final EncryptionService encryptionService;
+    private final MessageDigest messageDigest;
 
     @Autowired
-    public FileUploadController(StorageService storageService, EncryptionService encryptionService) {
+    public FileUploadController(
+            StorageService storageService,
+            EncryptionService encryptionService,
+            MessageDigest messageDigest
+    ) {
         this.storageService = storageService;
         this.encryptionService = encryptionService;
+        this.messageDigest = messageDigest;
     }
 
     @GetMapping
@@ -52,21 +61,30 @@ public class FileUploadController {
             return ResponseEntity.notFound().build();
         }
 
+        List<byte[]> body = List.of(
+                serialize(file),
+                messageDigest.digest(serialize(file))
+        );
+
         return ResponseEntity
                 .ok()
                 .header(
                         HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"" + file.getFilename() + "\""
                 )
-                .body(encryptionService.encryptBytes(serialize(file)));
+                .body(encryptionService.encryptBytes(serialize(body)));
     }
 
     @PostMapping
-    public ResponseEntity<String> handleFileUpload(@RequestBody byte[] file) {
-        FileWrapper fileWrapper = (FileWrapper) deserialize(encryptionService.decryptBytes(file));
-        storageService.store(fileWrapper);
+    public ResponseEntity<String> handleFileUpload(@RequestBody byte[] message) {
+        List<byte[]> fileWithHash = (List<byte[]>) deserialize(encryptionService.decryptBytes(message));
+        if (!Arrays.equals(fileWithHash.get(1), messageDigest.digest(fileWithHash.get(0)))) {
+            return ResponseEntity.badRequest().body("Hash does not match");
+        }
+        FileWrapper file = (FileWrapper) deserialize(fileWithHash.get(0));
+        storageService.store(file);
 
-        return ResponseEntity.ok().body(fileWrapper.getFilename());
+        return ResponseEntity.ok().body(file.getFilename());
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

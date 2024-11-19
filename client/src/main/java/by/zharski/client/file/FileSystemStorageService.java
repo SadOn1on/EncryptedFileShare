@@ -2,6 +2,8 @@ package by.zharski.client.file;
 
 import by.zharski.server.files.FileWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 
@@ -12,18 +14,16 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 @Service
+@PropertySource({ "classpath:application.properties", "classpath:application-${spring.profiles.active}.properties"})
 public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
 
-    @Autowired
-    public FileSystemStorageService(StorageProperties properties) {
-
-        if(properties.getLocation().trim().isEmpty()){
+    public FileSystemStorageService(@Value("${storage.folder.path}") String path) {
+        if(path.trim().isEmpty()){
             throw new StorageException("File upload location can not be Empty.");
         }
-
-        this.rootLocation = Paths.get(properties.getLocation());
+        this.rootLocation = Paths.get(path);
     }
 
     @Override

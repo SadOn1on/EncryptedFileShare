@@ -7,6 +7,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.security.crypto.encrypt.Encryptors;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 @Configuration
 @PropertySource({ "classpath:application.properties", "classpath:application-${spring.profiles.active}.properties"})
 public class EncryptionConfiguration {
@@ -19,6 +22,11 @@ public class EncryptionConfiguration {
     @Bean
     public BytesEncryptor bytesEncryptor() {
         return Encryptors.standard(password, salt);
+    }
+
+    @Bean
+    public MessageDigest messageDigest() throws NoSuchAlgorithmException {
+        return MessageDigest.getInstance("SHA-256");
     }
 
 }

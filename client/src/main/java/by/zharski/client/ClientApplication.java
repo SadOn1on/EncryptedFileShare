@@ -1,32 +1,18 @@
 package by.zharski.client;
 
-import by.zharski.client.RSA.RSA;
-import by.zharski.client.encription.EncryptionService;
-import by.zharski.client.encription.KeysClient;
 import by.zharski.client.file.FileClient;
-import by.zharski.client.file.StorageProperties;
-import by.zharski.client.file.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import java.math.BigInteger;
-import java.util.BitSet;
-import java.util.List;
 import java.util.Scanner;
 
 @SpringBootApplication
-@EnableConfigurationProperties(StorageProperties.class)
 public class ClientApplication implements CommandLineRunner {
 
-    private final StorageService storageService;
+    private final FileClient fileClient;
 
-    private final KeysClient keysClient;
-
-    private final RSA rsa;
-
-    private final String instruction =
+    private final String INSTRUCTIONS =
             """
                     -h to get commands
                     -x to exit
@@ -34,10 +20,8 @@ public class ClientApplication implements CommandLineRunner {
                     -download {filename} to download file from server
                     -upload {filename} to upload file to the server""";
 
-    public ClientApplication(KeysClient keysClient, RSA rsa, StorageService storageService) {
-        this.keysClient = keysClient;
-        this.rsa = rsa;
-        this.storageService = storageService;
+    public ClientApplication(FileClient fileClient) {
+        this.fileClient = fileClient;
     }
 
     public static void main(String[] args) {
@@ -45,16 +29,8 @@ public class ClientApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        String username = args[0];
-        String password = args[1];
-
-        List<List<BigInteger>> keys = keysClient.getEncryptionKes(username, password);
-        EncryptionService encryptionService = new EncryptionService(rsa, keys);
-        FileClient fileClient = new FileClient(encryptionService, keysClient.getBasePath(), username, password, storageService);
-
-        System.out.println("Keys received successfully");
-        System.out.println(instruction);
+    public void run(String... args) {
+        System.out.println(INSTRUCTIONS);
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String[] command = scanner.nextLine().split(" ");
@@ -63,7 +39,7 @@ public class ClientApplication implements CommandLineRunner {
                 continue;
             }
             if (command[0].equals("-h")) {
-                System.out.println(instruction);
+                System.out.println(INSTRUCTIONS);
             } else if (command[0].equals("-list")) {
                 fileClient.getFileList().forEach(System.out::println);
             } else if (command[0].equals("-x")) {
