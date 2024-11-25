@@ -1,6 +1,6 @@
-package by.zharski.server.encryption;
+package by.server.encryption;
 
-import by.zharski.server.RSA.RSA;
+import by.server.RSA.RSA;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package by.zharski.server.security;
+package by.server.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

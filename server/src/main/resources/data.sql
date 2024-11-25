@@ -5,7 +5,7 @@ values ('user',
 
 INSERT INTO users (username, password, enabled)
 values ('admin',
-        '{noop}pass',
+        '{noop}admin',
         1);
 
 INSERT INTO authorities (username, authority)

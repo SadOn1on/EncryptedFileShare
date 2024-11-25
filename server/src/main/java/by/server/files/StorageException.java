@@ -1,4 +1,4 @@
-package by.zharski.server.files;
+package by.server.files;
 
 
 public class StorageException extends RuntimeException {

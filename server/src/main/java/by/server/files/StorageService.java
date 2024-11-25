@@ -1,4 +1,4 @@
-package by.zharski.server.files;
+package by.server.files;
 
 import java.nio.file.Path;
 import java.util.stream.Stream;
