@@ -5,6 +5,7 @@ import by.server.files.FileWrapper;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.io.ByteArrayInputStream;
@@ -62,34 +63,41 @@ public class FileClient {
     }
 
     public void getFile(String filename) {
-        ParameterizedTypeReference<byte[]> parameterizedTypeReference = new ParameterizedTypeReference<>() {};
-
-        byte[] bytes = RestClient.create()
-                .get()
-                .uri(basePath + "/files/" + filename)
-                .header(HttpHeaders.AUTHORIZATION, "Basic " + encodedAuth)
-                .retrieve()
-                .body(parameterizedTypeReference);
-        List<byte[]> fileWithHash = (List<byte[]>) deserialize(encryptionService.decryptBytes(bytes));
-        if (!Arrays.equals(fileWithHash.get(1), messageDigest.digest(fileWithHash.get(0)))) {
-            System.out.println("Hash of the file does not match. File was not saved");
+        try {
+            ParameterizedTypeReference<byte[]> parameterizedTypeReference = new ParameterizedTypeReference<>() {};
+            byte[] bytes = RestClient.create()
+                    .get()
+                    .uri(basePath + "/files/" + filename)
+                    .header(HttpHeaders.AUTHORIZATION, "Basic " + encodedAuth)
+                    .retrieve()
+                    .body(parameterizedTypeReference);
+            List<byte[]> fileWithHash = (List<byte[]>) deserialize(encryptionService.decryptBytes(bytes));
+            if (!Arrays.equals(fileWithHash.get(1), messageDigest.digest(fileWithHash.get(0)))) {
+                System.out.println("Hash of the file does not match. File was not saved");
+            }
+            storageService.store((FileWrapper) deserialize(fileWithHash.get(0)));
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusCode());
         }
-        storageService.store((FileWrapper) deserialize(fileWithHash.get(0)));
     }
 
     public void uploadFile(String filename) {
-        FileWrapper fileWrapper = storageService.loadAsFile(filename);
-        List<byte[]> body = List.of(
-                serialize(fileWrapper),
-                messageDigest.digest(serialize(fileWrapper))
-        );
-        ResponseEntity<Void> response = RestClient.create()
-                .post()
-                .uri(basePath + "/files")
-                .body(encryptionService.encryptBytes(serialize(body)))
-                .header(HttpHeaders.AUTHORIZATION, "Basic " + encodedAuth)
-                .retrieve()
-                .toBodilessEntity();
+        try {
+            FileWrapper fileWrapper = storageService.loadAsFile(filename);
+            List<byte[]> body = List.of(
+                    serialize(fileWrapper),
+                    messageDigest.digest(serialize(fileWrapper))
+            );
+            ResponseEntity<Void> response = RestClient.create()
+                    .post()
+                    .uri(basePath + "/files")
+                    .body(encryptionService.encryptBytes(serialize(body)))
+                    .header(HttpHeaders.AUTHORIZATION, "Basic " + encodedAuth)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusCode());
+        }
     }
 
     static byte[] serialize(final Object obj) {
