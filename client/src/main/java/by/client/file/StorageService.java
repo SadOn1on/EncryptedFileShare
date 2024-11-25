@@ -1,6 +1,6 @@
-package by.zharski.client.file;
+package by.client.file;
 
-import by.zharski.server.files.FileWrapper;
+import by.server.files.FileWrapper;
 
 import java.nio.file.Path;
 import java.util.stream.Stream;

@@ -1,4 +1,4 @@
-package by.zharski.client;
+package by.client;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

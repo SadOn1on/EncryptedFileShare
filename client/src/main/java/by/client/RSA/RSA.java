@@ -1,4 +1,4 @@
-package by.zharski.client.RSA;
+package by.client.RSA;
 
 import java.math.BigInteger;
 import java.security.InvalidParameterException;

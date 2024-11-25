@@ -1,7 +1,7 @@
-package by.zharski.client.file;
+package by.client.file;
 
-import by.zharski.client.encription.EncryptionService;
-import by.zharski.server.files.FileWrapper;
+import by.client.encription.EncryptionService;
+import by.server.files.FileWrapper;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

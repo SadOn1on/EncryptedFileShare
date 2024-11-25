@@ -1,6 +1,6 @@
-package by.zharski.client;
+package by.client;
 
-import by.zharski.client.file.FileClient;
+import by.client.file.FileClient;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

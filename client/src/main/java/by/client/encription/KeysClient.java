@@ -1,6 +1,6 @@
-package by.zharski.client.encription;
+package by.client.encription;
 
-import by.zharski.client.RSA.RSA;
+import by.client.RSA.RSA;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestClient;

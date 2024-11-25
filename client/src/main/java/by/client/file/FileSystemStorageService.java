@@ -1,7 +1,6 @@
-package by.zharski.client.file;
+package by.client.file;
 
-import by.zharski.server.files.FileWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import by.server.files.FileWrapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package by.zharski.client.encription;
+package by.client.encription;
 
-import by.zharski.client.RSA.RSA;
+import by.client.RSA.RSA;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.security.crypto.encrypt.Encryptors;
 

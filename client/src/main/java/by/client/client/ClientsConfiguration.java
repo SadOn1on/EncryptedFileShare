@@ -1,10 +1,10 @@
-package by.zharski.client.client;
+package by.client.client;
 
-import by.zharski.client.RSA.RSA;
-import by.zharski.client.encription.EncryptionService;
-import by.zharski.client.encription.KeysClient;
-import by.zharski.client.file.FileClient;
-import by.zharski.client.file.StorageService;
+import by.client.RSA.RSA;
+import by.client.encription.EncryptionService;
+import by.client.encription.KeysClient;
+import by.client.file.FileClient;
+import by.client.file.StorageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Bean;
